@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전체 매체 주간 분석</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+  <script src="all_media_data.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nanum Gothic', sans-serif; background: #0f172a; color: #e2e8f0; padding: 32px; min-height: 100vh; }
+    .header { text-align: center; margin-bottom: 40px; }
+    .header h1 { font-size: 28px; font-weight: 800; color: #fff; }
+    .header p { font-size: 13px; color: #64748b; margin-top: 8px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
+    .kpi-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; text-align: center; }
+    .kpi-box .label { font-size: 13px; color: #d1d5db; font-weight: 700; }
+    .kpi-box .value { font-size: 22px; font-weight: 800; color: #fff; margin-top: 6px; }
+    .kpi-box .value.up { color: #4ade80 !important; }
+    .kpi-box .value.down { color: #f87171 !important; }
+    .up { color: #4ade80; }
+    .down { color: #f87171; }
+    .section { margin-bottom: 48px; }
+    .section-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
+    .section-sub { font-size: 10px; color: #64748b; margin-bottom: 16px; margin-top: 4px; padding-left: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; }
+    .card h3 { font-size: 16px; font-weight: 700; color: #94a3b8; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+    table.table-top30 { table-layout: fixed; }
+    th { text-align: right; padding: 8px 12px; color: #64748b; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    th:nth-child(1) { text-align: center; } th:nth-child(2) { text-align: left; }
+    td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #cbd5e1; text-align: right; }
+    td:nth-child(1) { text-align: center; padding-left: 4px; padding-right: 4px; } td:nth-child(2) { text-align: left; }
+    td.name { font-weight: 700; color: #fff; white-space: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; cursor: pointer; }
+    td.name::-webkit-scrollbar { display: none; }
+    table.table-top30 td.name { white-space: normal !important; overflow: visible !important; text-overflow: unset !important; word-break: keep-all; }
+    td.highlight-up { text-align: right; font-weight: 800; color: #4ade80; }
+    td.highlight-down { text-align: right; font-weight: 800; color: #f87171; }
+    tr:hover td { background: rgba(255,255,255,0.03); }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .badge.up { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .badge.down { background: rgba(248,113,113,0.15); color: #f87171; }
+    .rank { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; border-radius: 4px; font-size: 10px; font-weight: 800; background: rgba(99,102,241,0.2); color: #a5b4fc; margin-right: 0; }
+    td.name:hover { text-decoration: underline; opacity: 0.8; }
+    @keyframes highlight { 0% { background: rgba(99,102,241,0.3); } 100% { background: transparent; } }
+    tr.highlighted td { animation: highlight 5s ease-out; }
+    body.light { background: #f8fafc; color: #1e293b; }
+    body.light .kpi-box { background: #fff; border-color: #e2e8f0; }
+    body.light .kpi-box .label { color: #64748b; }
+    body.light .kpi-box .value { color: #1e293b; }
+    body.light .card { background: #fff; border-color: #e2e8f0; }
+    body.light .card h3 { color: #475569; }
+    body.light .section-title { color: #1e293b; }
+    body.light .section-sub { color: #94a3b8; }
+    body.light th { color: #475569; border-bottom-color: #e2e8f0; }
+    body.light td { color: #334155; border-bottom-color: #f1f5f9; }
+    body.light td.name { color: #1e293b; }
+    body.light td.highlight-up { color: #16a34a; }
+    body.light td.highlight-down { color: #dc2626; }
+    body.light .badge.up { background: rgba(22,163,74,0.1); color: #16a34a; }
+    body.light .badge.down { background: rgba(220,38,38,0.1); color: #dc2626; }
+    body.light .rank { background: rgba(99,102,241,0.1); color: #6366f1; }
+    body.light .up { color: #16a34a; }
+    body.light .down { color: #dc2626; }
+    body.light .kpi-box .value.up { color: #16a34a !important; }
+    body.light .kpi-box .value.down { color: #dc2626 !important; }
+    body.light tr:hover td { background: #f8fafc; }
+    body.light .header h1 { color: #1e293b; }
+    body.light .header p { color: #94a3b8; }
+    body.light td.name:hover { opacity: 0.7; }
+    .theme-toggle { position: fixed; top: 24px; right: 32px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.3s; z-index: 100; }
+    .theme-toggle:hover { transform: scale(1.1); }
+    body.light .theme-toggle { border-color: #e2e8f0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  </style>
+</head>
+<body>
+<div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
+<div class="header">
+  <h1>전체 매체 주간 분석 리포트</h1>
+  <p id="headerPeriod"></p>
+</div>
+<div class="kpi-grid" id="kpiGrid"></div>
+<div class="section">
+  <div class="section-title">매체비 변동 TOP 10 (금액 기준)</div>
+  <div class="section-sub">매체명 클릭 시 하단 TOP 30 해당 매체로 이동 (TOP 30에 없으면 반응 없음)</div>
+  <div class="grid-2">
+    <div class="card"><h3>상승 TOP 10</h3><table><colgroup><col style="width:30px"><col style="width:calc(100% - 390px)"><col style="width:120px"><col style="width:120px"><col style="width:120px"></colgroup><thead><tr><th>#</th><th>매체</th><th>OS</th><th>WoW</th><th>변동액</th></tr></thead><tbody id="diffUpBody"></tbody></table></div>
+    <div class="card"><h3>하락 TOP 10</h3><table><colgroup><col style="width:30px"><col style="width:calc(100% - 390px)"><col style="width:120px"><col style="width:120px"><col style="width:120px"></colgroup><thead><tr><th>#</th><th>매체</th><th>OS</th><th>WoW</th><th>변동액</th></tr></thead><tbody id="diffDownBody"></tbody></table></div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">매체비 변동 TOP 10 (% 기준)</div>
+  <div class="section-sub">상승률: W1 5만원 이상 & 변동액 +5만원 이상 | 하락률: W1 10만원 이상 & 변동액 -5만원 이상</div>
+  <div class="grid-2">
+    <div class="card"><h3>상승률 TOP 10</h3><table><colgroup><col style="width:30px"><col style="width:calc(100% - 390px)"><col style="width:120px"><col style="width:120px"><col style="width:120px"></colgroup><thead><tr><th>#</th><th>매체</th><th>W1</th><th>W2</th><th>WoW</th></tr></thead><tbody id="pctUpBody"></tbody></table></div>
+    <div class="card"><h3>하락률 TOP 10</h3><table><colgroup><col style="width:30px"><col style="width:calc(100% - 390px)"><col style="width:120px"><col style="width:120px"><col style="width:120px"></colgroup><thead><tr><th>#</th><th>매체</th><th>W1</th><th>W2</th><th>WoW</th></tr></thead><tbody id="pctDownBody"></tbody></table></div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">매체비 규모 TOP 30 (2주 합산)</div>
+  <div class="card"><table class="table-top30" style="table-layout:fixed"><colgroup><col style="width:100px"><col><col style="width:180px"><col style="width:280px"><col style="width:280px"><col style="width:280px"><col style="width:180px"></colgroup><thead><tr><th>#</th><th>매체</th><th>OS</th><th>합계</th><th>W1</th><th>W2</th><th>WoW</th></tr></thead><tbody id="top30Body"></tbody></table></div>
+</div>
+<div style="text-align:center; margin-top:60px; font-size:11px; color:#4a5568;" id="footer"></div>
+
+<script>
+const D = ALL_MEDIA_DATA;
+const fmt = n => n.toLocaleString('ko-KR');
+const wow = (curr, prev) => prev > 0 ? ((curr-prev)/prev*100).toFixed(1) : '0.0';
+
+// 헤더
+document.getElementById('headerPeriod').textContent = '기간: ' + D.meta.period;
+document.getElementById('footer').textContent = 'Last updated: ' + D.meta.updatedAt;
+
+// KPI
+const totalDiff = D.total.w2 - D.total.w1;
+const totalWow = wow(D.total.w2, D.total.w1);
+const cls = parseFloat(totalWow) >= 0 ? 'up' : 'down';
+const sign = parseFloat(totalWow) >= 0 ? '+' : '';
+document.getElementById('kpiGrid').innerHTML =
+  '<div class="kpi-box"><div class="label">전체 매체비 (W1)</div><div class="value">'+fmt(D.total.w1)+'원</div></div>' +
+  '<div class="kpi-box"><div class="label">전체 매체비 (W2)</div><div class="value">'+fmt(D.total.w2)+'원</div></div>' +
+  '<div class="kpi-box"><div class="label">WoW 변화</div><div class="value '+cls+'">'+(totalDiff>=0?'+':'')+fmt(totalDiff)+'원 ('+sign+totalWow+'%)</div></div>' +
+  '<div class="kpi-box"><div class="label">분석 매체 수</div><div class="value">'+D.meta.mediaCount+'</div></div>';
+
+// 테이블 렌더 함수
+function renderDiffTable(tbody, data) {
+  data.forEach((m,i) => {
+    const s = m.diff >= 0 ? '+' : '';
+    const c = m.diff >= 0 ? 'up' : 'down';
+    tbody.innerHTML += '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="name">'+m.name+'</td><td>'+m.os+'</td><td>'+s+m.pct+'%</td><td class="highlight-'+c+'">'+s+fmt(m.diff)+'원</td></tr>';
+  });
+}
+function renderPctTable(tbody, data) {
+  data.forEach((m,i) => {
+    const s = m.pct >= 0 ? '+' : '';
+    const c = m.pct >= 0 ? 'up' : 'down';
+    tbody.innerHTML += '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="name">'+m.name+'</td><td>'+fmt(m.w1)+'원</td><td>'+fmt(m.w2)+'원</td><td><span class="badge '+c+'">'+s+m.pct+'%</span></td></tr>';
+  });
+}
+
+renderDiffTable(document.getElementById('diffUpBody'), D.topDiffUp);
+renderDiffTable(document.getElementById('diffDownBody'), D.topDiffDown);
+renderPctTable(document.getElementById('pctUpBody'), D.topPctUp);
+renderPctTable(document.getElementById('pctDownBody'), D.topPctDown);
+
+// TOP 30
+const top30 = document.getElementById('top30Body');
+D.allMedia.forEach((m,i) => {
+  const s = m.pct >= 0 ? '+' : '';
+  const c = m.pct >= 0 ? 'up' : 'down';
+  top30.innerHTML += '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="name">'+m.name+'</td><td>'+m.os+'</td><td style="font-weight:800;color:#fff">'+fmt(m.total)+'원</td><td>'+fmt(m.w1)+'원</td><td>'+fmt(m.w2)+'원</td><td><span class="badge '+c+'">'+s+m.pct+'%</span></td></tr>';
+});
+
+// 클릭 이동
+let lastScrollPos = null;
+document.addEventListener('click', function(e) {
+  const td = e.target.closest('td.name');
+  if (!td) return;
+  const mediaName = td.textContent.trim();
+  const top30Table = document.querySelector('table.table-top30');
+  if (!top30Table) return;
+  const clickedRow = td.closest('tr');
+  const isInTop30 = top30Table.contains(clickedRow);
+  if (isInTop30 && lastScrollPos !== null) {
+    window.scrollTo({ top: lastScrollPos, behavior: 'smooth' });
+    lastScrollPos = null;
+    return;
+  }
+  const rows = top30Table.querySelectorAll('tbody tr');
+  for (let i = 0; i < rows.length; i++) {
+    const nameCell = rows[i].querySelector('td.name');
+    if (nameCell && nameCell.textContent.trim() === mediaName) {
+      document.querySelectorAll('tr.highlighted').forEach(r => r.classList.remove('highlighted'));
+      lastScrollPos = window.scrollY;
+      rows[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      rows[i].classList.add('highlighted');
+      return;
+    }
+  }
+});
+
+// 테마 토글
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;';
+}
+</script>
+</body>
+</html>
