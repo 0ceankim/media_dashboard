@@ -81,18 +81,22 @@
     
 
     /* 반응형 */
+
     @media (max-width: 1200px) {
-      .grid-2 { grid-template-columns: 1fr; }
+      .card { overflow-x: auto; }
+      table.table-top30 { min-width: 900px; }
     }
     @media (max-width: 768px) {
       body { padding: 16px; }
       .kpi-grid { grid-template-columns: 1fr; gap: 12px; }
       .kpi-box .value { font-size: 20px; }
       .grid-2 { grid-template-columns: 1fr; }
-      .card { padding: 16px; overflow-x: auto; }
-      table { min-width: 500px; }
-      .header h1 { font-size: 24px; }
-      .section-title { font-size: 16px; }
+      .card { padding: 12px; overflow-x: auto; }
+      table { min-width: 450px; }
+      table.table-top30 { min-width: 800px; }
+      .header h1 { font-size: 22px; }
+      .section-title { font-size: 15px; }
+      .nav-icon, .theme-toggle { width: 34px; height: 34px; font-size: 16px; }
     }  </style>
 </head>
 <body>
