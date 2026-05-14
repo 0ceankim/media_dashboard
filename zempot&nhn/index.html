@@ -1,13 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>매체비 주간 대시보드</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+  <title>잼팟 & 한게임 주간 리포트</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js">function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation">function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
+</script>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-  <script src="data.js"></script>
+  <script src="data.js">function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
+</script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Nanum Gothic', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e0e0e0; padding: 32px; min-height: 100vh; }
@@ -37,12 +40,32 @@
     tbody tr:hover td { background: rgba(255,255,255,0.05); }
     .wow-up { color: #4ade80 !important; font-weight: 700; }
     .wow-down { color: #f87171 !important; font-weight: 700; }
+    .nav-icon { display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.3); text-decoration:none; font-size:20px; transition:all 0.3s; }
+    .nav-icon:hover { transform:scale(1.1); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+    .theme-toggle { position:fixed; top:24px; right:32px; width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.3); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:20px; transition:all 0.3s; z-index:100; }
+    .theme-toggle:hover { transform:scale(1.1); }
+    body.light { background:#f8fafc; color:#1e293b; }
+    body.light .kpi-card { background:#fff; border-color:#e2e8f0; }
+    body.light .kpi-card .label { color:#64748b; }
+    body.light .kpi-card .value { color:#1e293b; }
+    body.light .card { background:#fff; border-color:#e2e8f0; }
+    body.light .card h2 { color:#1e293b; }
+    body.light .section-title { color:#1e293b; }
+    body.light th { color:#475569; border-bottom-color:#e2e8f0; }
+    body.light td { color:#334155; border-bottom-color:#f1f5f9; }
+    body.light .dashboard-header h1 { color:#1e293b; }
+    body.light .dashboard-header p { color:#94a3b8; }
+    body.light .nav-icon { border-color:#e2e8f0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    body.light .theme-toggle { border-color:#e2e8f0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    body.light .wow-up { color:#16a34a !important; }
+    body.light .wow-down { color:#dc2626 !important; }
+    body.light table tbody tr:last-child td { color:#1e293b; }
     .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #4a5568; }
   </style>
 </head>
-<body>
+<body><div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;"><a href="/media_dashboard/" class="nav-icon" title="전체 매체 분석">&#128221;</a></div><div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
 <div class="dashboard-header">
-  <h1>매체비 주간 대시보드</h1>
+  <h1>잼팟 & 한게임 주간 리포트</h1>
   <p id="headerSub"></p>
 </div>
 <div class="kpi-grid" id="kpiGrid"></div>
@@ -67,7 +90,7 @@ const fmt = n => n.toLocaleString('ko-KR');
 const calcWow = (curr, prev) => ((curr - prev) / prev * 100).toFixed(1);
 function weekTotal(data, week) { return sum(data.slice(week.start, week.end + 1)); }
 
-document.getElementById('headerSub').textContent = '데이터 기간: ' + D.meta.period + ' | 최종 업데이트: ' + D.meta.updatedAt;
+document.getElementById('headerSub').textContent = '기간: ' + D.meta.period;
 document.getElementById('updatedAt').textContent = D.meta.updatedAt;
 const lastWeek = weeks[weeks.length - 1];
 const prevWeek = weeks.length >= 2 ? weeks[weeks.length - 2] : null;
@@ -127,7 +150,7 @@ new Chart(document.getElementById('mainChart'), {
   type: 'line', data: { labels: dates, datasets: datasets },
   options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
     plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 13 }, padding: 16, usePointStyle: true } }, tooltip: { backgroundColor: 'rgba(20,20,40,0.95)', titleColor: '#fff', bodyColor: '#ccc', padding: 14, cornerRadius: 8, callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString() + '원' } }, annotation: { annotations: annotations } },
-    scales: { x: { ticks: { color: '#8892b0', font: { size: 11, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { position: 'left', min: y0.min, max: y0.max, ticks: { color: colors[0], font: { size: 11, weight: 'bold' }, callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(255,255,255,0.05)' }, title: { display: true, text: companyNames[0], color: colors[0], font: { size: 12, weight: 'bold' } } }, y1: { position: 'right', min: y1.min, max: y1.max, ticks: { color: colors[1], font: { size: 11, weight: 'bold' }, callback: v => (v/10000).toFixed(0)+'만' }, grid: { drawOnChartArea: false }, title: { display: true, text: companyNames[1]||'', color: colors[1], font: { size: 12, weight: 'bold' } } } }
+    scales: { x: { ticks: { color: '#8892b0', font: { size: 11, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { position: 'left', min: y0.min, max: y0.max, ticks: { color: colors[0], font: { size: 11, weight: 'bold' }, callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(128,128,128,0.2)' }, title: { display: true, text: companyNames[0], color: colors[0], font: { size: 12, weight: 'bold' } } }, y1: { position: 'right', min: y1.min, max: y1.max, ticks: { color: colors[1], font: { size: 11, weight: 'bold' }, callback: v => (v/10000).toFixed(0)+'만' }, grid: { drawOnChartArea: false }, title: { display: true, text: companyNames[1]||'', color: colors[1], font: { size: 12, weight: 'bold' } } } }
   }
 });
 
@@ -139,15 +162,16 @@ const dowDs = companyNames.map((name, i) => {
   const bg = ['rgba(96,165,250,0.7)','rgba(251,146,60,0.7)','rgba(74,222,128,0.7)'];
   return { label: name, data: avg, backgroundColor: bg[i]||'rgba(167,139,250,0.7)', borderRadius: 6 };
 });
-new Chart(document.getElementById('dowChart'), { type: 'bar', data: { labels: dows, datasets: dowDs }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 11 }, usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label+': '+ctx.parsed.y.toLocaleString()+'원' } } }, scales: { x: { ticks: { color: '#8892b0', font: { size: 12, weight: 'bold' } }, grid: { display: false } }, y: { ticks: { color: '#8892b0', callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(255,255,255,0.05)' } } } } });
+new Chart(document.getElementById('dowChart'), { type: 'bar', data: { labels: dows, datasets: dowDs }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 11 }, usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label+': '+ctx.parsed.y.toLocaleString()+'원' } } }, scales: { x: { ticks: { color: '#8892b0', font: { size: 12, weight: 'bold' } }, grid: { display: false } }, y: { ticks: { color: '#8892b0', callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(128,128,128,0.2)' } } } } });
 
 // 주간 비교
 if (weeks.length >= 2) {
   const labels = companyNames.concat(['전체']);
   const w1D = companyNames.map(n => weekTotal(companies[n], prevWeek)); w1D.push(tPrev);
   const w2D = companyNames.map(n => weekTotal(companies[n], lastWeek)); w2D.push(tCurr);
-  new Chart(document.getElementById('weeklyBar'), { type: 'bar', data: { labels: labels, datasets: [ { label: prevWeek.label, data: w1D, backgroundColor: 'rgba(148,163,184,0.5)', borderRadius: 6 }, { label: lastWeek.label, data: w2D, backgroundColor: 'rgba(192,132,252,0.7)', borderRadius: 6 } ] }, options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 11 }, usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label+': '+ctx.parsed.x.toLocaleString()+'원' } } }, scales: { x: { ticks: { color: '#8892b0', callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(255,255,255,0.05)' } }, y: { ticks: { color: '#ccc', font: { size: 12, weight: 'bold' } }, grid: { display: false } } } } });
+  new Chart(document.getElementById('weeklyBar'), { type: 'bar', data: { labels: labels, datasets: [ { label: prevWeek.label, data: w1D, backgroundColor: 'rgba(148,163,184,0.5)', borderRadius: 6 }, { label: lastWeek.label, data: w2D, backgroundColor: 'rgba(192,132,252,0.7)', borderRadius: 6 } ] }, options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 11 }, usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label+': '+ctx.parsed.x.toLocaleString()+'원' } } }, scales: { x: { ticks: { color: '#8892b0', callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(128,128,128,0.2)' } }, y: { ticks: { color: '#ccc', font: { size: 12, weight: 'bold' } }, grid: { display: false } } } } });
 }
+function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
 </script>
 </body>
 </html>
