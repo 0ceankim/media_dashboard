@@ -63,7 +63,7 @@
     .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #4a5568; }
   </style>
 </head>
-<body><div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;"><a href="/media_dashboard/" class="nav-icon" title="전체 매체 분석">&#128221;</a></div><div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
+<body><div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;"><a href="/media_dashboard/" class="nav-icon" title="매체 주간 리포트">&#128221;</a></div><div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
 <div class="dashboard-header">
   <h1>잼팟 & 한게임 주간 리포트</h1>
   <p id="headerSub"></p>
@@ -107,7 +107,7 @@ function createKpiCard(label, value, wowPct) {
   const color = pct >= 0 ? '#4ade80' : '#f87171';
   return '<div class="kpi-card"><div class="label">'+label+'</div><div style="margin: 8px 0 4px;"><span class="value">'+fmt(value)+'원</span> <span class="wow" style="color:'+color+'">('+sign+wowPct+'%)</span></div><div class="sub">vs 전주</div></div>';
 }
-let kpiHtml = createKpiCard('잼팟 & 한게임 매체비', totalLast, prevWeek ? calcWow(totalLast, totalPrev) : '0.0');
+let kpiHtml = createKpiCard('잼팟 & 한게임', totalLast, prevWeek ? calcWow(totalLast, totalPrev) : '0.0');
 companyNames.forEach(name => {
   const curr = weekTotal(companies[name], lastWeek);
   const prev = prevWeek ? weekTotal(companies[name], prevWeek) : curr;
