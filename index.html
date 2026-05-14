@@ -127,7 +127,7 @@ const sign = parseFloat(totalWow) >= 0 ? '+' : '';
 document.getElementById('kpiGrid').innerHTML =
   '<div class="kpi-box"><div class="label">전체 매체비 (W1)</div><div style="margin:8px 0 4px;"><span class="value">'+fmt(D.total.w1)+'원</span></div></div>' +
   '<div class="kpi-box"><div class="label">전체 매체비 (W2)</div><div style="margin:8px 0 4px;"><span class="value">'+fmt(D.total.w2)+'원</span></div></div>' +
-  '<div class="kpi-box"><div class="label">WoW 변화</div><div style="margin:8px 0 4px;"><span class="value '+cls+'">'+(totalDiff>=0?'+':'')+fmt(totalDiff)+'원</span> <span class="wow" style="color:'+(parseFloat(totalWow)>=0?'#4ade80':'#f87171')+'">('+sign+totalWow+'%)</span></div></div>';
+  '<div class="kpi-box"><div class="label">WoW</div><div style="margin:8px 0 4px;"><span class="value '+cls+'">'+(totalDiff>=0?'+':'')+fmt(totalDiff)+'원</span> <span class="wow" style="color:'+(parseFloat(totalWow)>=0?'#4ade80':'#f87171')+'">('+sign+totalWow+'%)</span></div></div>';
 
 // 테이블 렌더 함수
 function renderDiffTable(tbody, data) {
