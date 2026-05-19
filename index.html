@@ -8,12 +8,12 @@
   <script src="all_media_data.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Nanum Gothic', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e0e0e0; padding: 32px; min-height: 100vh; }
+    body { font-family: 'Nanum Gothic', sans-serif; background: linear-gradient(135deg, #1e1e2e 0%, #2d2d3f 100%); color: #e0e0e0; padding: 32px; min-height: 100vh; }
     .header { text-align: center; margin-bottom: 40px; }
     .header h1 { font-size: 32px; font-weight: 800; color: #fff; }
     .header p { font-size: 14px; color: #8892b0; margin-top: 8px; }
     .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-    .kpi-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center; transition: transform 0.2s; }
+    .kpi-box { background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; text-align: center; transition: transform 0.2s; }
     .kpi-box:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
     .kpi-box .label { font-size: 14px; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; }
     .kpi-box .value { font-size: 26px; font-weight: 800; margin: 8px 0 4px; color: #fff; display: inline; }
@@ -30,7 +30,7 @@
     .card h3 { font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 20px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
     table.table-top30 { table-layout: fixed; }
-    th { text-align: right; padding: 8px 12px; color: #ffffff; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    th { text-align: right; padding: 8px 12px; color: #ffffff; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.08); }
     th:nth-child(1) { text-align: center; } th:nth-child(2) { text-align: left; }
     td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #cbd5e1; text-align: right; }
     td:nth-child(1) { text-align: center; padding-left: 4px; padding-right: 4px; } td:nth-child(2) { text-align: left; }
@@ -146,7 +146,7 @@ const sign = parseFloat(totalWow) >= 0 ? '+' : '';
 document.getElementById('kpiGrid').innerHTML =
   '<div class="kpi-box"><div class="label">전체 매체비 (W1)</div><div style="margin:8px 0 4px;"><span class="value">'+fmt(D.total.w1)+'원</span></div></div>' +
   '<div class="kpi-box"><div class="label">전체 매체비 (W2)</div><div style="margin:8px 0 4px;"><span class="value">'+fmt(D.total.w2)+'원</span></div></div>' +
-  '<div class="kpi-box"><div class="label">WoW</div><div style="margin:8px 0 4px;"><span class="value '+cls+'">'+(totalDiff>=0?'+':'')+fmt(totalDiff)+'원</span> <span class="wow" style="color:'+(parseFloat(totalWow)>=0?'#4ade80':'#f87171')+'">('+sign+totalWow+'%)</span></div></div>';
+  '<div class="kpi-box"><div class="label">WoW</div><div style="margin:8px 0 4px;"><span class="value '+cls+'">'+(totalDiff>=0?'+':'')+fmt(totalDiff)+'원</span> <span class="WoW" style="color:'+(parseFloat(totalWow)>=0?'#4ade80':'#f87171')+'">('+sign+totalWow+'%)</span></div></div>';
 
 // 테이블 렌더 함수
 function renderDiffTable(tbody, data) {
