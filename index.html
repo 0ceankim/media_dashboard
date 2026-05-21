@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>전체 매체 대시보드</title>
+  <title>전체 매체 주간 분석</title>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="shared_process.js"></script>
@@ -13,7 +13,7 @@
     .header { text-align: center; margin-bottom: 40px; }
     .header h1 { font-size: 32px; font-weight: 800; color: #fff; display: inline-block; }
     .header p { font-size: 14px; color: #8892b0; margin-top: 8px; }
-    .upload-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.4); cursor: pointer; color: #a5b4fc; transition: all 0.3s; vertical-align: middle; position: relative; top: -2px; }
+    .upload-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.4); cursor: pointer; color: #fff; transition: all 0.3s; vertical-align: middle; position: relative; top: -2px; }
     .upload-icon:hover { background: rgba(99,102,241,0.4); transform: scale(1.1); }
     .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
     .kpi-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center; transition: transform 0.2s; }
@@ -47,7 +47,7 @@
     .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
     .badge.up { background: rgba(74,222,128,0.15); color: #4ade80; }
     .badge.down { background: rgba(248,113,113,0.15); color: #f87171; }
-    .rank { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; border-radius: 4px; font-size: 10px; font-weight: 800; background: rgba(99,102,241,0.2); color: #a5b4fc; }
+    .rank { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; border-radius: 4px; font-size: 10px; font-weight: 800; background: rgba(99,102,241,0.2); color: #fff; }
     td.name:hover { text-decoration: underline; opacity: 0.8; }
     @keyframes highlight { 0% { background: rgba(99,102,241,0.3); } 100% { background: transparent; } }
     tr.highlighted td { animation: highlight 5s ease-out; }
@@ -62,7 +62,7 @@
     .modal-close:hover { color: #fff; }
     .drop-zone { border: 2px dashed rgba(99,102,241,0.5); border-radius: 16px; padding: 48px 24px; cursor: pointer; transition: all 0.3s; }
     .drop-zone:hover, .drop-zone.dragover { border-color: #6366f1; background: rgba(99,102,241,0.1); }
-    .file-info { margin-top: 16px; padding: 12px; background: rgba(99,102,241,0.1); border-radius: 8px; color: #a5b4fc; font-size: 12px; display: none; }
+    .file-info { margin-top: 16px; padding: 12px; background: rgba(99,102,241,0.1); border-radius: 8px; color: #fff; font-size: 12px; display: none; }
     .btn-process { margin-top: 20px; padding: 12px 32px; border-radius: 8px; border: none; background: #6366f1; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; display: none; transition: all 0.3s; }
     .btn-process:hover { background: #4f46e5; transform: scale(1.02); }
     .status-msg { margin-top: 12px; font-size: 12px; color: #4ade80; display: none; }
@@ -103,12 +103,12 @@
   <div class="modal">
     <span class="modal-close" onclick="closeModal()">&times;</span>
     <h2 style="color:#fff;font-size:18px;margin-bottom:8px;">파일 업로드</h2>
-    <p style="color:#8892b0;font-size:12px;margin-bottom:20px;">매체비 엑셀 파일(.xlsx)</p>
+    <p style="color:#8892b0;font-size:12px;margin-bottom:20px;">매체 리포트 엑셀 파일(.xlsx)</p>
     <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
       <div style="font-size:36px;margin-bottom:12px;">&#128194;</div>
       <div style="color:#94a3b8;font-size:13px;"><strong style="color:#6366f1;">클릭</strong>하거나 <strong style="color:#6366f1;">드래그</strong>하세요</div>
     </div>
-    <a href="https://drive.google.com/drive/folders/1ICjvwrOTcTmyU8mjPaZ12UYD0FiSxhzA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 16px;border-radius:8px;background:rgba(66,133,244,0.1);border:none;color:#93b4f4;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Google Drive에서 엑셀 파일 받기</a>
+    <a href="https://drive.google.com/drive/folders/1ICjvwrOTcTmyU8mjPaZ12UYD0FiSxhzA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 16px;border-radius:8px;background:rgba(66,133,244,0.1);border:none;color:#93b4f4;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Google Drive에서 파일 받기</a>
     <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
     <div class="file-info" id="fileInfo"></div>
     <button class="btn-process" id="btnProcess" onclick="processFile()">데이터 적용</button>
@@ -117,7 +117,7 @@
 </div>
 
 <div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;">
-  <a href="zempot&nhn/" class="nav-icon" title="잼팟 & 한게임 대시보드"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg></a>
+  <a href="zempot&nhn/" class="nav-icon" title="잼팟 & NHN 대시보드"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg></a>
 </div>
 <div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
 
@@ -157,11 +157,11 @@
   <div class="card"><table class="table-top30" style="table-layout:fixed"><colgroup><col style="width:100px"><col><col style="width:180px"><col style="width:280px"><col style="width:280px"><col style="width:280px"><col style="width:180px"></colgroup><thead><tr><th>#</th><th>매체</th><th>OS</th><th>합계</th><th>W1</th><th>W2</th><th>WoW</th></tr></thead><tbody id="top30Body"></tbody></table></div>
 </div>
 
-<div style="text-align:center; margin-top:60px; font-size:14px; color:#64748b;">Ocean.Kim</div>
+<div style="text-align:center; margin-top:60px; font-size:14px; color:#64748b;">Ocean.Kim | <span style="cursor:pointer;text-decoration:underline;" onclick="openGuide()">가이드</span></div>
 <script>
 // === 데이터 삭제 ===
 function clearDashboardData() {
-  showConfirmModal('데이터를 초기화하시겠습니까?', '대시보드 모두에서 데이터가 사라집니다.', function() {
+  showConfirmModal('업로드된 데이터를 삭제하시겠습니까?', '두 페이지 모두에서 데이터가 사라집니다.', function() {
     localStorage.removeItem('media_dashboard_raw');
     location.reload();
   });
@@ -182,6 +182,10 @@ function showConfirmModal(title, msg, onConfirm) {
   document.getElementById('cfmOk').onclick = function() { document.body.removeChild(overlay); onConfirm(); };
   overlay.onclick = function(e) { if (e.target === overlay) document.body.removeChild(overlay); };
 }
+
+
+function openGuide() { document.getElementById('guideModal').classList.add('active'); }
+function closeGuide() { document.getElementById('guideModal').classList.remove('active'); }
 
 function toggleTheme() {
   document.body.classList.toggle('light');
@@ -327,5 +331,22 @@ if (saved) {
   document.getElementById('headerPeriod').textContent = '파일을 업로드하세요 (타이틀 옆 아이콘 클릭)';
 }
 </script>
+
+<!-- 이용 가이드 모달 -->
+<div class="modal-overlay" id="guideModal" onclick="if(event.target===this)closeGuide()">
+  <div class="modal" style="width:520px;text-align:left;">
+    <span class="modal-close" onclick="closeGuide()">&times;</span>
+    <h2 style="font-size:18px;margin-bottom:20px;text-align:center;">&#128214; 이용 가이드</h2>
+    <div style="font-size:13px;line-height:2;color:#cbd5e1;">
+      <p><strong style="color:#a5b4fc;">1. 데이터 업데이트</strong><br>타이틀 옆 업로드 아이콘 클릭 → Google Drive에서 최신 엑셀 다운로드 → 업로드<br><span style="font-size:11px;color:#64748b;">(애드팝콘 관계자만 Google Drive 접근 가능)</span></p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">2. 대시보드 전환</strong><br>좌측 상단 아이콘으로 전체 매체 ↔ 잼팟 & 한게임 리포트 전환</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">3. 매체별 필터</strong><br>잼팟 & 한게임 대시보드 하단 표에서 회사/매체/OS 필터 + 정렬 가능</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">4. 매체 상세 이동</strong><br>전체 매체 대시보드에서 변동 매체 클릭 → TOP 30으로 이동 (다시 클릭 시 원복)</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">5. 다크/라이트 모드</strong><br>우측 상단 아이콘으로 전환</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">6. 데이터 저장</strong><br>업로드된 데이터는 브라우저에 개인 저장됨<br><span style="font-size:11px;color:#64748b;">(다른 사람/시크릿 모드에서는 별도 업로드 필요)</span></p>
+    </div>
+    <p style="margin-top:24px;text-align:center;font-size:11px;color:#64748b;">기타 문의 사항 발생시 리워드 사업실 오션에게 연락부탁드립니다!</p>
+  </div>
+</div>
 </body>
 </html>
