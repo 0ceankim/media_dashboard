@@ -295,7 +295,7 @@ function renderAllMediaDashboard(D) {
     data.forEach(function(m, i) {
       var s = m.diff >= 0 ? '+' : '';
       var c = m.diff >= 0 ? 'up' : 'down';
-      tbody.innerHTML += '<tr><td><span class="rank">' + (i + 1) + '</span></td><td class="name" onclick="scrollToTop30(this.textContent, this)">' + m.name + '</td><td>' + m.os + '</td><td>' + s + m.pct + '%</td><td class="highlight-' + c + '">' + s + fmt(m.diff) + '원</td></tr>';
+      tbody.innerHTML += '<tr><td><span class="rank">' + (i + 1) + '</span></td><td class="name" onclick="scrollToTop30(this.textContent, this)">' + m.name + '</td><td>' + m.os + '</td><td>' +s + m.pct.toFixed(1) + '%</td><td class="highlight-' + c + '">' + s + fmt(m.diff) + '원</td></tr>';
     });
   }
   function renderPctTable(id, data) {
@@ -304,7 +304,7 @@ function renderAllMediaDashboard(D) {
     data.forEach(function(m, i) {
       var s = m.pct >= 0 ? '+' : '';
       var c = m.pct >= 0 ? 'up' : 'down';
-      tbody.innerHTML += '<tr><td><span class="rank">' + (i + 1) + '</span></td><td class="name" onclick="scrollToTop30(this.textContent, this)">' + m.name + '</td><td>' + fmt(m.w1) + '원</td><td>' + fmt(m.w2) + '원</td><td><span class="badge ' + c + '">' + s + m.pct + '%</span></td></tr>';
+      tbody.innerHTML += '<tr><td><span class="rank">' + (i + 1) + '</span></td><td class="name" onclick="scrollToTop30(this.textContent, this)">' + m.name + '</td><td>' + fmt(m.w1) + '원</td><td>' + fmt(m.w2) + '원</td><td><span class="badge ' + c + '">' + s + m.pct.toFixed(1) + '%</span></td></tr>';
     });
   }
 
@@ -318,7 +318,7 @@ function renderAllMediaDashboard(D) {
   D.allMedia.forEach(function(m, i) {
     var s = m.pct >= 0 ? '+' : '';
     var c = m.pct >= 0 ? 'up' : 'down';
-    top30.innerHTML += '<tr><td><span class="rank">' + (i + 1) + '</span></td><td class="name" onclick="scrollBackToSource()">' + m.name + '</td><td>' + m.os + '</td><td style="font-weight:800;color:#fff">' + fmt(m.total) + '원</td><td>' + fmt(m.w1) + '원</td><td>' + fmt(m.w2) + '원</td><td><span class="badge ' + c + '">' + s + m.pct + '%</span></td></tr>';
+    top30.innerHTML += '<tr><td><span class="rank">' + (i + 1) + '</span></td><td class="name" onclick="scrollBackToSource()">' + m.name + '</td><td>' + m.os + '</td><td style="font-weight:800;color:#fff">' + fmt(m.total) + '원</td><td>' + fmt(m.w1) + '원</td><td>' + fmt(m.w2) + '원</td><td><span class="badge ' + c + '">' + s + m.pct.toFixed(1) + '%</span></td></tr>';
   });
 }
 
