@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>전체 매체 주간 분석</title>
+  <title>매체 대시보드</title>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="shared_process.js"></script>
@@ -103,7 +103,7 @@
   <div class="modal">
     <span class="modal-close" onclick="closeModal()">&times;</span>
     <h2 style="color:#fff;font-size:18px;margin-bottom:8px;">파일 업로드</h2>
-    <p style="color:#8892b0;font-size:12px;margin-bottom:20px;">매체 리포트 엑셀 파일(.xlsx)</p>
+    <p style="color:#8892b0;font-size:12px;margin-bottom:20px;">매체비 엑셀 파일(.xlsx)</p>
     <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
       <div style="font-size:36px;margin-bottom:12px;">&#128194;</div>
       <div style="color:#94a3b8;font-size:13px;"><strong style="color:#6366f1;">클릭</strong>하거나 <strong style="color:#6366f1;">드래그</strong>하세요</div>
@@ -117,7 +117,7 @@
 </div>
 
 <div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;">
-  <a href="zempot&nhn/" class="nav-icon" title="잼팟 & NHN 대시보드"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg></a>
+  <a href="zempot&nhn/" class="nav-icon" title="잼팟 & 한게임 대시보드"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg></a>
 </div>
 <div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
 
@@ -161,7 +161,7 @@
 <script>
 // === 데이터 삭제 ===
 function clearDashboardData() {
-  showConfirmModal('업로드된 데이터를 삭제하시겠습니까?', '두 페이지 모두에서 데이터가 사라집니다.', function() {
+  showConfirmModal('업로드된 데이터를 초기화하시겠습니까?', '대시보드 모두에서 데이터가 사라집니다.', function() {
     localStorage.removeItem('media_dashboard_raw');
     location.reload();
   });
