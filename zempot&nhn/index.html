@@ -28,7 +28,7 @@
     .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; }
     .card h2 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px; }
     .chart-wrapper { position: relative; height: 300px; }
-    .chart-wrapper.tall { height: 350px; }
+    .chart-wrapper.tall { height: 250px; }
     .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
     table { width: 100%; border-collapse: collapse; }
     thead th { background: rgba(68,114,196,0.3); color: #fff; padding: 12px 16px; text-align: right; font-size: 12px; font-weight: 700; }
@@ -337,7 +337,7 @@ function renderDashboard(D) {
     tbody.innerHTML += '<tr><td>' + name + '</td><td>' + fmt(prev) + '원</td><td>' + fmt(curr) + '원</td><td class="' + cls + '">' + s + calcWow(curr, prev) + '%</td><td>' + fmt(Math.round(curr / dayCount)) + '원</td></tr>';
   });
   const tw = parseFloat(calcWow(tCurr, tPrev));
-  tbody.innerHTML += '<tr><td>전체</td><td>' + fmt(tPrev) + '원</td><td>' + fmt(tCurr) + '원</td><td class="' + (tw >= 0 ? 'wow-up' : 'wow-down') + '">' + (tw >= 0 ? '+' : '') + calcWow(tCurr, tPrev) + '%</td><td>' + fmt(Math.round(tCurr / (lastWeek.end - lastWeek.start + 1))) + '원</td></tr>';
+  tbody.innerHTML += '<tr><td>전체</td><td>' + fmt(tPrev) + '원</td><td>' + fmt(tCurr) + '원</td><td class="' + (tw >= 0 ? 'wow-up' : 'wow-down') + '">' + (tw >= 0 ? '+' : '') + calcWow(tCurr, tPrev) + '%</td><td>' + fmt(Math.round(tCurr / (lastWeek.end - lastWeek.start + 1))) + '원</td></tr>';document.querySelector('.chart-wrapper.tall').style.height='350px';
   
   // 차트
   const colors = ['#60a5fa', '#fb923c', '#4ade80', '#a78bfa'];
