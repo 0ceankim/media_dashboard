@@ -90,10 +90,10 @@
     body.light .header h1 { color: #1e293b; }
     body.light .header p { color: #94a3b8; }
     body.light td.name:hover { opacity: 0.7; }
-    body.light .nav-icon { border-color: #e2e8f0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    body.light .theme-toggle { border-color: #e2e8f0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    body.light .nav-icon { border-color: #e2e8f0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); color: #000; }
+    body.light .theme-toggle { border-color: #e2e8f0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); color: #000; }
     body.light .modal { background: #fff; border-color: #e2e8f0; }
-    body.light .upload-icon { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); }
+    body.light .upload-icon { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); color: #4f46e5; }
     @media (max-width: 1200px) { .card { overflow-x: auto; } table.table-top30 { min-width: 900px; } }
     @media (max-width: 768px) { body { padding: 16px; } .kpi-grid { grid-template-columns: 1fr; gap: 12px; } .kpi-box .value { font-size: 20px; } .grid-2 { grid-template-columns: 1fr; } .card { padding: 12px; overflow-x: auto; } table { min-width: 450px; } table.table-top30 { min-width: 800px; } .header h1 { font-size: 22px; } .section-title { font-size: 15px; } .nav-icon, .theme-toggle { width: 34px; height: 34px; font-size: 16px; } }
   </style>
@@ -117,7 +117,7 @@
 </div>
 
 <div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;">
-  <a href="zempot&nhn/" class="nav-icon" title="잼팟 & 한게임 대시보드"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg></a>
+  <a href="zempot&nhn/" class="nav-icon" title="잼팟 & 한게임 대시보드"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg></a>
 </div>
 <div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
 
@@ -125,7 +125,7 @@
   <div style="display:inline-flex;align-items:center;gap:12px;">
     <h1>매체 주간 리포트</h1>
     <span class="upload-icon" onclick="openModal()" title="파일 업로드">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     </span>
   </div>
   <p id="headerPeriod"></p>
