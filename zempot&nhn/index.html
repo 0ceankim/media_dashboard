@@ -1,26 +1,26 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>잼팟 & 한게임 주간 리포트</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js">function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation">function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="../shared_process.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-  <script src="data.js">function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
-</script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Nanum Gothic', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e0e0e0; padding: 32px; min-height: 100vh; }
-    .dashboard-header { text-align: center; margin-bottom: 40px; }
-    .dashboard-header h1 { font-size: 32px; font-weight: 800; color: #fff; }
+    .dashboard-header { text-align: center; margin-bottom: 40px; position: relative; }
+    .dashboard-header h1 { font-size: 32px; font-weight: 800; color: #fff; display: inline-block; }
+    .upload-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; position: relative; top: -2px; border-radius: 8px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.4); cursor: pointer; color: #a5b4fc; transition: all 0.3s;  }
+    .upload-icon:hover { background: rgba(99,102,241,0.4); transform: scale(1.1); }
     .dashboard-header p { font-size: 14px; color: #8892b0; margin-top: 8px; }
     .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
     .kpi-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center; transition: transform 0.2s; }
-    .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
-    .kpi-card .label { font-size: 14px; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; }
+    .kpi-card:hover {  box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .kpi-card .label { font-size: 14px; color: #ffffff; letter-spacing: 1px; }
     .kpi-card .value { font-size: 26px; font-weight: 800; margin: 8px 0 4px; color: #fff; display: inline; }
     .kpi-card .wow { font-size: 14px; font-weight: 700; display: inline; margin-left: 6px; }
     .kpi-card .sub { font-size: 12px; color: #64748b; margin-top: 4px; }
@@ -40,148 +40,375 @@
     tbody tr:hover td { background: rgba(255,255,255,0.05); }
     .wow-up { color: #4ade80 !important; font-weight: 700; }
     .wow-down { color: #f87171 !important; font-weight: 700; }
-    .nav-icon { display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.3); text-decoration:none; font-size:20px; transition:all 0.3s; }
-    .nav-icon:hover { transform:scale(1.1); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
-    .theme-toggle { position:fixed; top:24px; right:32px; width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.3); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:20px; transition:all 0.3s; z-index:100; }
-    .theme-toggle:hover { transform:scale(1.1); }
-    body.light { background:#f8fafc; color:#1e293b; }
-    body.light .kpi-card { background:#fff; border-color:#e2e8f0; }
-    body.light .kpi-card .label { color:#64748b; }
-    body.light .kpi-card .value { color:#1e293b; }
-    body.light .card { background:#fff; border-color:#e2e8f0; }
-    body.light .card h2 { color:#1e293b; }
-    body.light .section-title { color:#1e293b; }
-    body.light th { color:#475569; border-bottom-color:#e2e8f0; }
-    body.light td { color:#334155; border-bottom-color:#f1f5f9; }
-    body.light .dashboard-header h1 { color:#1e293b; }
-    body.light .dashboard-header p { color:#94a3b8; }
-    body.light .nav-icon { border-color:#e2e8f0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-    body.light .theme-toggle { border-color:#e2e8f0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-    body.light .wow-up { color:#16a34a !important; }
-    body.light .wow-down { color:#dc2626 !important; }
-    body.light table tbody tr:last-child td { color:#1e293b; }
-    .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #4a5568; }
+    .footer { text-align: center; margin-top: 40px; font-size: 14px; color: #64748b; }
 
-    /* 반응형 */
-    @media (max-width: 768px) {
-      body { padding: 16px; }
-      .kpi-grid { grid-template-columns: 1fr; gap: 12px; }
-      .kpi-card .value { font-size: 20px; }
-      .card { padding: 16px; overflow-x: auto; }
-      .chart-grid { grid-template-columns: 1fr; }
-      .dashboard-header h1 { font-size: 24px; }
-      .chart-wrapper, .chart-wrapper.tall { height: 250px; }
-    }  </style>
+    /* 업로드 모달 */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px; width: 400px; max-width: 90%; text-align: center; position: relative; }
+    .modal-close { position: absolute; top: 16px; right: 20px; font-size: 24px; color: #64748b; cursor: pointer; }
+    .modal-close:hover { color: #fff; }
+    .modal h2 { color: #fff; font-size: 20px; margin-bottom: 8px; }
+    .modal p { color: #8892b0; font-size: 13px; margin-bottom: 24px; }
+    .drop-zone { border: 2px dashed rgba(99,102,241,0.5); border-radius: 16px; padding: 48px 24px; cursor: pointer; transition: all 0.3s; }
+    .drop-zone:hover, .drop-zone.dragover { border-color: #6366f1; background: rgba(99,102,241,0.1); }
+    .drop-zone-icon { font-size: 48px; margin-bottom: 16px; }
+    .drop-zone-text { color: #94a3b8; font-size: 14px; }
+    .drop-zone-text strong { color: #6366f1; }
+    .file-info { margin-top: 16px; padding: 12px; background: rgba(99,102,241,0.1); border-radius: 8px; color: #a5b4fc; font-size: 12px; display: none; }
+    .btn-process { margin-top: 20px; padding: 12px 32px; border-radius: 8px; border: none; background: #6366f1; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; display: none; transition: all 0.3s; }
+    .btn-process:hover { background: #4f46e5; transform: scale(1.02); }
+    .status-msg { margin-top: 12px; font-size: 12px; color: #4ade80; display: none; }
+    .clear-data { display:inline-flex; align-items:center; justify-content:center; margin-left:8px; width:18px; height:18px; border-radius:50%; background:rgba(248,113,113,0.15); color:#f87171; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; vertical-align:middle; }
+    .clear-data:hover { background:rgba(248,113,113,0.3); transform:scale(1.2); }
+    /* 라이트 모드 */
+    body.light { background: #f8fafc; color: #1e293b; }
+    body.light .dashboard-header h1 { color: #1e293b; }
+    body.light .dashboard-header p { color: #64748b; }
+    body.light .kpi-card { background: #fff; border-color: #e2e8f0; }
+    body.light .kpi-card .label { color: #000; }
+    body.light .kpi-card .value { color: #1e293b; }
+    body.light .card { background: #fff; border-color: #e2e8f0; }
+    body.light .card h2 { color: #000; }
+    body.light thead th { background: rgba(68,114,196,0.15); color: #000; }
+    body.light tbody td { color: #000; border-bottom-color: #f1f5f9; }
+    body.light tbody td:first-child { color: #000; }
+    body.light tbody tr:last-child td { background: rgba(0,0,0,0.02); }
+    body.light .footer { color: #94a3b8; }
+    body.light .theme-toggle { border-color: #e2e8f0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    body.light .nav-icon, body.light [class*="nav-icon"] { border-color: #e2e8f0 !important; background: #fff !important; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    body.light .modal { background: #fff; border-color: #e2e8f0; }
+    body.light .modal h2 { color: #1e293b; }
+    body.light .modal p { color: #64748b; }
+    body.light .upload-icon { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); }
+    .detail-filter { padding:6px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.15); background:#1e293b; color:#ccc; font-size:12px; font-family:inherit; cursor:pointer; -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center; padding-right:28px; }
+    .detail-filter option { background:#1e293b; color:#ccc; }
+    .detail-filter:focus { outline:none; border-color:rgba(99,102,241,0.5); }
+    body.light .detail-filter { background:#fff; color:#334155; border-color:#e2e8f0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center; }
+    body.light .detail-filter option { background:#fff; color:#334155; }
+  </style>
 </head>
-<body><div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;"><a href="/media_dashboard/" class="nav-icon" title="매체 주간 리포트">&#128221;</a></div><div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환">&#9790;</div>
-<div class="dashboard-header">
-  <h1>잼팟 & 한게임 주간 리포트</h1>
-  <p id="headerSub"></p>
+<body>
+
+<!-- 업로드 모달 -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <h2>파일 업로드</h2>
+    <p>매체 리포트 엑셀 파일(.xlsx)을 업로드하세요</p>
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <div class="drop-zone-icon">&#128194;</div>
+      <div class="drop-zone-text"><strong>클릭</strong>하거나 파일을 <strong>드래그</strong>하세요</div>
+    </div>
+    <a href="https://drive.google.com/drive/folders/1ICjvwrOTcTmyU8mjPaZ12UYD0FiSxhzA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 16px;border-radius:8px;background:rgba(66,133,244,0.1);border:none;color:#93b4f4;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Google Drive에서 파일 받기</a>
+    <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
+    <div class="file-info" id="fileInfo"></div>
+    <button class="btn-process" id="btnProcess" onclick="processFile()">데이터 적용</button>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
 </div>
+
+<!-- 네비게이션 + 테마 토글 -->
+<div style="position:fixed;top:24px;left:32px;display:flex;gap:12px;z-index:100;">
+  <a href="../" class="nav-icon" title="전체 매체 대시보드" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(0,0,0,0.3);text-decoration:none;font-size:20px;transition:all 0.3s;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></a>
+</div>
+<div class="theme-toggle" onclick="toggleTheme()" title="다크/라이트 모드 전환" style="position:fixed;top:24px;right:32px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(0,0,0,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all 0.3s;z-index:100;">&#9790;</div>
+
+<!-- 메인 콘텐츠 -->
+<div class="dashboard-header">
+  <div style="display:inline-flex;align-items:center;gap:12px;"><h1>잼팟 & 한게임 주간 리포트</h1><span class="upload-icon" id="uploadIcon" onclick="openModal()" title="파일 업로드"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span></div>
+  <p id="headerSub"></p><p id="fileVersion" style="font-size:14px;color:#8892b0;margin-top:4px;"></p>
+</div>
+
 <div class="kpi-grid" id="kpiGrid"></div>
+
 <div class="section"><div class="card"><h2>주간 요약</h2>
   <table><thead><tr><th>구분</th><th id="w1Header"></th><th id="w2Header"></th><th>WoW</th><th>일평균</th></tr></thead><tbody id="summaryBody"></tbody></table>
 </div></div>
+
 <div class="section"><div class="card"><h2>일별 매체비 추이 (이중 축)</h2><div class="chart-wrapper tall"><canvas id="mainChart"></canvas></div></div></div>
-<div class="chart-grid">
-  <div class="card"><h2>요일별 평균 매체비</h2><div class="chart-wrapper"><canvas id="dowChart"></canvas></div></div>
-  <div class="card"><h2>주간 비교</h2><div class="chart-wrapper"><canvas id="weeklyBar"></canvas></div></div>
+
+
+
+
+<div class="section" style="margin-top:32px;">
+  <div class="card">
+    <h2>매체별 상세 (2주 합산)</h2>
+    <div id="detailFilters" style="display:none;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;">
+      <select id="filterCompany" onchange="applyDetailFilters()" class="detail-filter"><option value="">전체 회사</option></select>
+      <select id="filterMedia" onchange="applyDetailFilters()" class="detail-filter"><option value="">전체 매체</option></select>
+      <select id="filterOS" onchange="applyDetailFilters()" class="detail-filter"><option value="">전체 OS</option></select>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="detail-table" style="table-layout:fixed;min-width:900px;">
+        <colgroup><col style="width:50px"><col style="width:120px"><col><col style="width:90px"><col style="width:150px"><col style="width:150px"><col style="width:150px"><col style="width:90px"></colgroup>
+        <thead><tr>
+          <th style="text-align:center">#</th>
+          <th style="text-align:left">회사</th>
+          <th style="text-align:left">매체</th>
+          <th style="text-align:right">OS</th>
+          <th style="text-align:right;cursor:pointer;" onclick="sortDetail('total')">합계 <span id="sortTotal">▼</span></th>
+          <th style="text-align:right;cursor:pointer;" onclick="sortDetail('w1')">W1 <span id="sortW1"></span></th>
+          <th style="text-align:right;cursor:pointer;" onclick="sortDetail('w2')">W2 <span id="sortW2"></span></th>
+          <th style="text-align:right;cursor:pointer;" onclick="sortDetail('pct')">WoW <span id="sortPct"></span></th>
+        </tr></thead>
+        <tbody id="mediaDetailBody"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<div class="footer">Last updated: <span id="updatedAt"></span></div>
+
+<div class="footer" style="font-size:14px;">Ocean.Kim</div>
 
 <script>
-const D = DASHBOARD_DATA;
-const dates = D.dates;
-const companies = D.companies;
-const weeks = D.weeks;
-const companyNames = Object.keys(companies);
-const sum = arr => arr.reduce((a,b) => a+b, 0);
-const fmt = n => n.toLocaleString('ko-KR');
-const calcWow = (curr, prev) => ((curr - prev) / prev * 100).toFixed(1);
-function weekTotal(data, week) { return sum(data.slice(week.start, week.end + 1)); }
-
-document.getElementById('headerSub').textContent = '기간: ' + D.meta.period;
-document.getElementById('updatedAt').textContent = D.meta.updatedAt;
-const lastWeek = weeks[weeks.length - 1];
-const prevWeek = weeks.length >= 2 ? weeks[weeks.length - 2] : null;
-document.getElementById('w1Header').textContent = prevWeek ? prevWeek.label : '-';
-document.getElementById('w2Header').textContent = lastWeek.label;
-
-// KPI
-let totalLast = 0, totalPrev = 0;
-companyNames.forEach(name => { totalLast += weekTotal(companies[name], lastWeek); if (prevWeek) totalPrev += weekTotal(companies[name], prevWeek); });
-function createKpiCard(label, value, wowPct) {
-  const pct = parseFloat(wowPct);
-  const arrow = pct >= 0 ? '\u25B2' : '\u25BC';
-  const sign = pct >= 0 ? '+' : '';
-  const color = pct >= 0 ? '#4ade80' : '#f87171';
-  return '<div class="kpi-card"><div class="label">'+label+'</div><div style="margin: 8px 0 4px;"><span class="value">'+fmt(value)+'원</span> <span class="wow" style="color:'+color+'">('+sign+wowPct+'%)</span></div><div class="sub">vs 전주</div></div>';
+// === 데이터 삭제 ===
+function clearDashboardData() {
+  showConfirmModal('업로드된 데이터를 삭제하시겠습니까?', '두 페이지 모두에서 데이터가 사라집니다.', function() {
+    localStorage.removeItem('media_dashboard_raw');
+    location.reload();
+  });
 }
-let kpiHtml = createKpiCard('잼팟 & 한게임', totalLast, prevWeek ? calcWow(totalLast, totalPrev) : '0.0');
-companyNames.forEach(name => {
-  const curr = weekTotal(companies[name], lastWeek);
-  const prev = prevWeek ? weekTotal(companies[name], prevWeek) : curr;
-  kpiHtml += createKpiCard(name + '', curr, prevWeek ? calcWow(curr, prev) : '0.0');
-});
-document.getElementById('kpiGrid').innerHTML = kpiHtml;
 
-// 주간 요약
-const tbody = document.getElementById('summaryBody');
-let tPrev = 0, tCurr = 0;
-companyNames.forEach(name => {
-  const curr = weekTotal(companies[name], lastWeek);
-  const prev = prevWeek ? weekTotal(companies[name], prevWeek) : 0;
-  tPrev += prev; tCurr += curr;
-  const w = parseFloat(calcWow(curr, prev));
-  const cls = w >= 0 ? 'wow-up' : 'wow-down';
-  const s = w >= 0 ? '+' : '';
-  const dayCount = lastWeek.end - lastWeek.start + 1;
-  tbody.innerHTML += '<tr><td>'+name+'</td><td>'+fmt(prev)+'원</td><td>'+fmt(curr)+'원</td><td class="'+cls+'">'+s+calcWow(curr,prev)+'%</td><td>'+fmt(Math.round(curr/dayCount))+'원</td></tr>';
-});
-const tw = parseFloat(calcWow(tCurr, tPrev));
-tbody.innerHTML += '<tr><td>전체</td><td>'+fmt(tPrev)+'원</td><td>'+fmt(tCurr)+'원</td><td class="'+(tw>=0?'wow-up':'wow-down')+'">'+(tw>=0?'+':'')+calcWow(tCurr,tPrev)+'%</td><td>'+fmt(Math.round(tCurr/(lastWeek.end-lastWeek.start+1)))+'원</td></tr>';
+function showConfirmModal(title, msg, onConfirm) {
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:99999;display:flex;align-items:center;justify-content:center;';
+  var box = document.createElement('div');
+  box.style.cssText = 'background:#1e293b;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;width:360px;max-width:90%;text-align:center;';
+  if (document.body.classList.contains('light')) box.style.cssText = 'background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:32px;width:360px;max-width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);';
+  var titleColor = document.body.classList.contains('light') ? '#1e293b' : '#fff';
+  var msgColor = document.body.classList.contains('light') ? '#64748b' : '#8892b0';
+  box.innerHTML = '<div style="font-size:16px;font-weight:800;color:' + titleColor + ';margin-bottom:8px;">' + title + '</div><div style="font-size:13px;color:' + msgColor + ';margin-bottom:24px;">' + msg + '</div><div style="display:flex;gap:12px;justify-content:center;"><button id="cfmCancel" style="padding:10px 24px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#94a3b8;font-size:13px;font-weight:700;cursor:pointer;">취소</button><button id="cfmOk" style="padding:10px 24px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">삭제</button></div>';
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  document.getElementById('cfmCancel').onclick = function() { document.body.removeChild(overlay); };
+  document.getElementById('cfmOk').onclick = function() { document.body.removeChild(overlay); onConfirm(); };
+  overlay.onclick = function(e) { if (e.target === overlay) document.body.removeChild(overlay); };
+}
 
-// 메인 차트 (선 그래프, 영역 채우기 없음)
-const colors = ['#60a5fa', '#fb923c', '#4ade80', '#a78bfa'];
-const datasets = companyNames.map((name, i) => ({
-  label: name, data: companies[name],
-  borderColor: colors[i], borderWidth: 3,
-  pointRadius: 5, pointBackgroundColor: colors[i], pointHoverRadius: 8,
-  tension: 0.35, fill: false,
-  yAxisID: i === 0 ? 'y' : 'y1'
-}));
-const annotations = {};
-weeks.forEach((w, i) => { if (i > 0) { annotations['d'+i] = { type: 'line', xMin: w.start-0.5, xMax: w.start-0.5, borderColor: 'rgba(255,255,255,0.3)', borderWidth: 2, borderDash: [6,4], label: { display: true, content: 'W'+i+' | W'+(i+1), position: 'start', color: '#8892b0', font: { size: 11 } } }; } });
-function axisRange(data) { const max = Math.max(...data); const min = Math.min(...data); return { min: Math.max(0, Math.floor(min*0.9/100000)*100000), max: Math.ceil(max*1.05/100000)*100000 }; }
-const y0 = axisRange(companies[companyNames[0]]);
-const y1 = companyNames.length > 1 ? axisRange(companies[companyNames[1]]) : y0;
-
-new Chart(document.getElementById('mainChart'), {
-  type: 'line', data: { labels: dates, datasets: datasets },
-  options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
-    plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 13 }, padding: 16, usePointStyle: true } }, tooltip: { backgroundColor: 'rgba(20,20,40,0.95)', titleColor: '#fff', bodyColor: '#ccc', padding: 14, cornerRadius: 8, callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString() + '원' } }, annotation: { annotations: annotations } },
-    scales: { x: { ticks: { color: '#8892b0', font: { size: 11, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { position: 'left', min: y0.min, max: y0.max, ticks: { color: colors[0], font: { size: 11, weight: 'bold' }, callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(128,128,128,0.2)' }, title: { display: true, text: companyNames[0], color: colors[0], font: { size: 12, weight: 'bold' } } }, y1: { position: 'right', min: y1.min, max: y1.max, ticks: { color: colors[1], font: { size: 11, weight: 'bold' }, callback: v => (v/10000).toFixed(0)+'만' }, grid: { drawOnChartArea: false }, title: { display: true, text: companyNames[1]||'', color: colors[1], font: { size: 12, weight: 'bold' } } } }
+// === 테마 토글 ===
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  var icon = document.querySelector('.theme-toggle');
+  if (document.body.classList.contains('light')) {
+    icon.textContent = '\u2600';
+    localStorage.setItem('theme', 'light');
+  } else {
+    icon.textContent = '\u263E';
+    localStorage.setItem('theme', 'dark');
   }
-});
-
-// 요일별 평균
-const dows = ['목','금','토','일','월','화','수'];
-const dowDs = companyNames.map((name, i) => {
-  const data = companies[name];
-  const avg = dows.map((d, di) => { let t=0,c=0; weeks.forEach(w => { const idx=w.start+di; if(idx<=w.end){t+=data[idx];c++;} }); return Math.round(t/c); });
-  const bg = ['rgba(96,165,250,0.7)','rgba(251,146,60,0.7)','rgba(74,222,128,0.7)'];
-  return { label: name, data: avg, backgroundColor: bg[i]||'rgba(167,139,250,0.7)', borderRadius: 6 };
-});
-new Chart(document.getElementById('dowChart'), { type: 'bar', data: { labels: dows, datasets: dowDs }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 11 }, usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label+': '+ctx.parsed.y.toLocaleString()+'원' } } }, scales: { x: { ticks: { color: '#8892b0', font: { size: 12, weight: 'bold' } }, grid: { display: false } }, y: { ticks: { color: '#8892b0', callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(128,128,128,0.2)' } } } } });
-
-// 주간 비교
-if (weeks.length >= 2) {
-  const labels = companyNames.concat(['전체']);
-  const w1D = companyNames.map(n => weekTotal(companies[n], prevWeek)); w1D.push(tPrev);
-  const w2D = companyNames.map(n => weekTotal(companies[n], lastWeek)); w2D.push(tCurr);
-  new Chart(document.getElementById('weeklyBar'), { type: 'bar', data: { labels: labels, datasets: [ { label: prevWeek.label, data: w1D, backgroundColor: 'rgba(148,163,184,0.5)', borderRadius: 6 }, { label: lastWeek.label, data: w2D, backgroundColor: 'rgba(192,132,252,0.7)', borderRadius: 6 } ] }, options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 11 }, usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label+': '+ctx.parsed.x.toLocaleString()+'원' } } }, scales: { x: { ticks: { color: '#8892b0', callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: 'rgba(128,128,128,0.2)' } }, y: { ticks: { color: '#ccc', font: { size: 12, weight: 'bold' } }, grid: { display: false } } } } });
 }
-function toggleTheme() { document.body.classList.toggle('light'); document.querySelector('.theme-toggle').innerHTML = document.body.classList.contains('light') ? '&#9728;' : '&#9790;'; }
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light');
+  document.querySelector('.theme-toggle').textContent = '\u2600';
+}
+
+// === 업로드 UI ===
+let uploadedFile = null;
+
+function openModal() { document.getElementById('uploadModal').classList.add('active'); }
+function closeModal() { document.getElementById('uploadModal').classList.remove('active'); }
+
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+
+function handleFile(file) {
+  if (!file) return;
+  uploadedFile = file;
+  document.getElementById('fileInfo').style.display = 'block';
+  document.getElementById('fileInfo').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+  document.getElementById('btnProcess').style.display = 'inline-block';
+}
+
+function processFile() {
+  if (!uploadedFile) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const workbook = XLSX.read(e.target.result, { type: 'array' });
+      const rawData = parseExcelRaw(workbook);
+      saveRawData(rawData, uploadedFile.name);
+      const data = processForGophoryu(rawData);
+      data.meta.fileName = uploadedFile.name;
+      
+      document.getElementById('statusMsg').style.display = 'block';
+      document.getElementById('statusMsg').textContent = '데이터 적용 완료! 대시보드를 갱신합니다...';
+      
+      setTimeout(() => {
+        closeModal();
+        renderDashboard(data);
+      }, 1000);
+    } catch (err) {
+      document.getElementById('statusMsg').style.display = 'block';
+      document.getElementById('statusMsg').style.color = '#f87171';
+      document.getElementById('statusMsg').textContent = '오류: ' + err.message;
+    }
+  };
+  reader.readAsArrayBuffer(uploadedFile);
+}
+
+// === 대시보드 렌더링 ===
+let chartInstances = [];
+
+function renderDashboard(D) {
+  // 기존 차트 제거
+  chartInstances.forEach(c => c.destroy());
+  chartInstances = [];
+  
+  const dates = D.dates;
+  const companies = D.companies;
+  const weeks = D.weeks;
+  const companyNames = Object.keys(companies).sort();
+  const sum = arr => arr.reduce((a, b) => a + b, 0);
+  const fmt = n => n.toLocaleString('ko-KR');
+  const calcWow = (curr, prev) => ((curr - prev) / prev * 100).toFixed(1);
+  function weekTotal(data, week) { return sum(data.slice(week.start, week.end + 1)); }
+  
+  document.getElementById('headerSub').textContent = '기간: ' + D.meta.period;
+  document.getElementById('fileVersion').innerHTML = D.meta.fileName ? '업로드 파일: ' + D.meta.fileName + ' <span class="clear-data" onclick="clearDashboardData()" title="데이터 삭제">&times;</span>' : '';
+  // fileVersion은 별도 처리
+  
+  const lastWeek = weeks[weeks.length - 1];
+  const prevWeek = weeks.length >= 2 ? weeks[weeks.length - 2] : null;
+  document.getElementById('w1Header').textContent = prevWeek ? prevWeek.label : '-';
+  document.getElementById('w2Header').textContent = lastWeek.label;
+  
+  // KPI
+  let totalLast = 0, totalPrev = 0;
+  companyNames.forEach(name => { totalLast += weekTotal(companies[name], lastWeek); if (prevWeek) totalPrev += weekTotal(companies[name], prevWeek); });
+  
+  function createKpiCard(label, value, wowPct) {
+    const pct = parseFloat(wowPct);
+    const sign = pct >= 0 ? '+' : '';
+    const color = pct >= 0 ? '#4ade80' : '#f87171';
+    return '<div class="kpi-card"><div class="label">' + label + '</div><div style="margin:8px 0 4px;"><span class="value">' + fmt(value) + '원</span> <span class="wow" style="color:' + color + '">(' + sign + wowPct + '%)</span></div><div class="sub">vs 전주</div></div>';
+  }
+  
+  let kpiHtml = createKpiCard('잼팟 & 한게임', totalLast, prevWeek ? calcWow(totalLast, totalPrev) : '0.0');
+  companyNames.forEach(name => {
+    const curr = weekTotal(companies[name], lastWeek);
+    const prev = prevWeek ? weekTotal(companies[name], prevWeek) : curr;
+    kpiHtml += createKpiCard(name, curr, prevWeek ? calcWow(curr, prev) : '0.0');
+  });
+  document.getElementById('kpiGrid').innerHTML = kpiHtml;
+  
+  // 주간 요약
+  const tbody = document.getElementById('summaryBody');
+  tbody.innerHTML = '';
+  let tPrev = 0, tCurr = 0;
+  companyNames.forEach(name => {
+    const curr = weekTotal(companies[name], lastWeek);
+    const prev = prevWeek ? weekTotal(companies[name], prevWeek) : 0;
+    tPrev += prev; tCurr += curr;
+    const w = parseFloat(calcWow(curr, prev));
+    const cls = w >= 0 ? 'wow-up' : 'wow-down';
+    const s = w >= 0 ? '+' : '';
+    const dayCount = lastWeek.end - lastWeek.start + 1;
+    tbody.innerHTML += '<tr><td>' + name + '</td><td>' + fmt(prev) + '원</td><td>' + fmt(curr) + '원</td><td class="' + cls + '">' + s + calcWow(curr, prev) + '%</td><td>' + fmt(Math.round(curr / dayCount)) + '원</td></tr>';
+  });
+  const tw = parseFloat(calcWow(tCurr, tPrev));
+  tbody.innerHTML += '<tr><td>전체</td><td>' + fmt(tPrev) + '원</td><td>' + fmt(tCurr) + '원</td><td class="' + (tw >= 0 ? 'wow-up' : 'wow-down') + '">' + (tw >= 0 ? '+' : '') + calcWow(tCurr, tPrev) + '%</td><td>' + fmt(Math.round(tCurr / (lastWeek.end - lastWeek.start + 1))) + '원</td></tr>';
+  
+  // 차트
+  const colors = ['#60a5fa', '#fb923c', '#4ade80', '#a78bfa'];
+  const datasets = companyNames.map((name, i) => ({ label: name, data: companies[name], borderColor: colors[i], borderWidth: 3, pointRadius: 5, pointBackgroundColor: colors[i], pointHoverRadius: 8, tension: 0.35, fill: false, yAxisID: i === 0 ? 'y' : 'y1' }));
+  const annotations = {};
+  weeks.forEach((w, i) => { if (i > 0) { annotations['d' + i] = { type: 'line', xMin: w.start - 0.5, xMax: w.start - 0.5, borderColor: 'rgba(255,255,255,0.3)', borderWidth: 2, borderDash: [6, 4], label: { display: true, content: 'W' + i + ' | W' + (i + 1), position: 'start', color: '#8892b0', font: { size: 11 } } }; } });
+  function axisRange(data) { const max = Math.max(...data); const min = Math.min(...data); return { min: Math.max(0, Math.floor(min * 0.9 / 100000) * 100000), max: Math.ceil(max * 1.05 / 100000) * 100000 }; }
+  const y0 = axisRange(companies[companyNames[0]]);
+  const y1r = companyNames.length > 1 ? axisRange(companies[companyNames[1]]) : y0;
+  
+  const c1 = new Chart(document.getElementById('mainChart'), { type: 'line', data: { labels: dates, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top', labels: { color: '#ccc', font: { size: 13 }, padding: 16, usePointStyle: true } }, tooltip: { backgroundColor: 'rgba(20,20,40,0.95)', titleColor: '#fff', bodyColor: '#ccc', padding: 14, cornerRadius: 8, callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString() + '원' } }, annotation: { annotations: annotations } }, scales: { x: { ticks: { color: '#8892b0', font: { size: 11, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { position: 'left', min: y0.min, max: y0.max, ticks: { color: colors[0], font: { size: 11, weight: 'bold' }, callback: v => (v / 10000).toFixed(0) + '만' }, grid: { color: 'rgba(128,128,128,0.2)' }, title: { display: true, text: companyNames[0], color: colors[0], font: { size: 12, weight: 'bold' } } }, y1: { position: 'right', min: y1r.min, max: y1r.max, ticks: { color: colors[1], font: { size: 11, weight: 'bold' }, callback: v => (v / 10000).toFixed(0) + '만' }, grid: { drawOnChartArea: false }, title: { display: true, text: companyNames[1] || '', color: colors[1], font: { size: 12, weight: 'bold' } } } } } });
+  chartInstances.push(c1);
+  
+
+
+  // 매체별 상세 표
+  if (D.mediaDetail && D.mediaDetail.length > 0) {
+    window._mediaDetailData = D.mediaDetail;
+    window._mediaDetailSort = { key: 'total', dir: 'desc' };
+    initDetailFilters(D.mediaDetail);
+    renderDetailTable(D.mediaDetail);
+  }
+}
+
+
+// === 매체별 상세 필터/정렬 ===
+function initDetailFilters(data) {
+  var companies = [...new Set(data.map(function(m){return m.company||'';}))].sort();
+  var medias = [...new Set(data.map(function(m){return m.name;}))].sort();
+  var oses = [...new Set(data.map(function(m){return m.os;}))].sort();
+  
+  var fc = document.getElementById('filterCompany');
+  var fm = document.getElementById('filterMedia');
+  var fo = document.getElementById('filterOS');
+  
+  fc.innerHTML = '<option value="">전체 회사</option>';
+  companies.forEach(function(v){fc.innerHTML += '<option value="'+v+'">'+v+'</option>';});
+  fm.innerHTML = '<option value="">전체 매체</option>';
+  medias.forEach(function(v){fm.innerHTML += '<option value="'+v+'">'+v+'</option>';});
+  fo.innerHTML = '<option value="">전체 OS</option>';
+  oses.forEach(function(v){fo.innerHTML += '<option value="'+v+'">'+v+'</option>';});
+  
+  document.getElementById('detailFilters').style.display = 'flex';
+}
+
+function applyDetailFilters() {
+  var fc = document.getElementById('filterCompany').value;
+  var fm = document.getElementById('filterMedia').value;
+  var fo = document.getElementById('filterOS').value;
+  var filtered = window._mediaDetailData.filter(function(m) {
+    if (fc && (m.company||'') !== fc) return false;
+    if (fm && m.name !== fm) return false;
+    if (fo && m.os !== fo) return false;
+    return true;
+  });
+  var s = window._mediaDetailSort;
+  filtered.sort(function(a,b){ var v = s.dir==='desc' ? b[s.key]-a[s.key] : a[s.key]-b[s.key]; return v; });
+  renderDetailTable(filtered);
+}
+
+function sortDetail(key) {
+  var s = window._mediaDetailSort;
+  if (s.key === key) { s.dir = s.dir === 'desc' ? 'asc' : 'desc'; }
+  else { s.key = key; s.dir = 'desc'; }
+  // 화살표 업데이트
+  ['Total','W1','W2','Pct'].forEach(function(k){
+    var el = document.getElementById('sort'+k);
+    if(el) el.textContent = '';
+  });
+  var id = 'sort' + key.charAt(0).toUpperCase() + key.slice(1);
+  var el = document.getElementById(id);
+  if(el) el.textContent = s.dir === 'desc' ? '▼' : '▲';
+  applyDetailFilters();
+}
+
+function renderDetailTable(data) {
+  var fmt = function(n){return n.toLocaleString('ko-KR');};
+  var tbody = document.getElementById('mediaDetailBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  data.forEach(function(m, i) {
+    var sign = m.pct >= 0 ? '+' : '';
+    var cls = m.pct >= 0 ? 'wow-up' : 'wow-down';
+    tbody.innerHTML += '<tr><td style="text-align:center;"><span style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:4px;font-size:10px;font-weight:800;background:rgba(99,102,241,0.2);color:#a5b4fc;">' + (i + 1) + '</span></td><td style="text-align:left;font-size:12px;color:#94a3b8;">' + (m.company || '') + '</td><td style="text-align:left;font-weight:700;color:#fff;">' + m.name + '</td><td style="text-align:right;">' + m.os + '</td><td style="text-align:right;font-weight:800;color:#fff;">' + fmt(m.total) + '원</td><td style="text-align:right;">' + fmt(m.w1) + '원</td><td style="text-align:right;">' + fmt(m.w2) + '원</td><td style="text-align:right;" class="' + cls + '">' + sign + m.pct + '%</td></tr>';
+  });
+}
+
+// === 초기 로드: localStorage에서 데이터 복원 ===
+const saved = loadRawData();
+if (saved) {
+  const data = processForGophoryu(saved.rawData);
+  data.meta.fileName = saved.fileName;
+  renderDashboard(data);
+} else {
+  document.getElementById('headerSub').textContent = '파일을 업로드하세요 (타이틀 옆 아이콘 클릭)';
+}
 </script>
 </body>
 </html>
