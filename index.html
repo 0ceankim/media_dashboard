@@ -103,12 +103,12 @@
   <div class="modal">
     <span class="modal-close" onclick="closeModal()">&times;</span>
     <h2 style="color:#fff;font-size:18px;margin-bottom:8px;">파일 업로드</h2>
-    <p style="color:#8892b0;font-size:12px;margin-bottom:20px;">매체 리포트 엑셀 파일(.xlsx)</p>
+    <p style="color:#8892b0;font-size:12px;margin-bottom:20px;">매체비 엑셀 파일(.xlsx)</p>
     <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
       <div style="font-size:36px;margin-bottom:12px;">&#128194;</div>
       <div style="color:#94a3b8;font-size:13px;"><strong style="color:#6366f1;">클릭</strong>하거나 <strong style="color:#6366f1;">드래그</strong>하세요</div>
     </div>
-    <a href="https://drive.google.com/drive/folders/1ICjvwrOTcTmyU8mjPaZ12UYD0FiSxhzA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 16px;border-radius:8px;background:rgba(66,133,244,0.1);border:none;color:#93b4f4;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Google Drive에서 파일 받기</a>
+    <a href="https://drive.google.com/drive/folders/1ICjvwrOTcTmyU8mjPaZ12UYD0FiSxhzA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 16px;border-radius:8px;background:rgba(66,133,244,0.1);border:none;color:#93b4f4;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Google Drive에서 엑셀 파일 받기</a>
     <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
     <div class="file-info" id="fileInfo"></div>
     <button class="btn-process" id="btnProcess" onclick="processFile()">데이터 적용</button>
@@ -161,7 +161,7 @@
 <script>
 // === 데이터 삭제 ===
 function clearDashboardData() {
-  showConfirmModal('업로드된 데이터를 삭제하시겠습니까?', '두 페이지 모두에서 데이터가 사라집니다.', function() {
+  showConfirmModal('데이터를 초기화하시겠습니까?', '대시보드 모두에서 데이터가 사라집니다.', function() {
     localStorage.removeItem('media_dashboard_raw');
     location.reload();
   });
