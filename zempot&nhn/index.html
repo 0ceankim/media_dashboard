@@ -14,7 +14,7 @@
     body { font-family: 'Nanum Gothic', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e0e0e0; padding: 32px; min-height: 100vh; }
     .dashboard-header { text-align: center; margin-bottom: 40px; position: relative; }
     .dashboard-header h1 { font-size: 32px; font-weight: 800; color: #fff; display: inline-block; }
-    .upload-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; position: relative; top: -2px; border-radius: 8px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.4); cursor: pointer; color: #a5b4fc; transition: all 0.3s;  }
+    .upload-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; position: relative; top: -2px; border-radius: 8px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.4); cursor: pointer; color: #fff; transition: all 0.3s;  }
     .upload-icon:hover { background: rgba(99,102,241,0.4); transform: scale(1.1); }
     .dashboard-header p { font-size: 14px; color: #8892b0; margin-top: 8px; }
     .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
@@ -36,7 +36,6 @@
     thead th:last-child { border-radius: 0 8px 0 0; }
     tbody td { padding: 10px 16px; text-align: right; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; }
     tbody td:first-child { text-align: left; font-weight: 700; color: #fff; }
-    tbody tr:last-child td { font-weight: 800; color: #fff; background: rgba(255,255,255,0.03); }
     tbody tr:hover td { background: rgba(255,255,255,0.05); }
     .wow-up { color: #4ade80 !important; font-weight: 700; }
     .wow-down { color: #f87171 !important; font-weight: 700; }
@@ -55,12 +54,28 @@
     .drop-zone-icon { font-size: 48px; margin-bottom: 16px; }
     .drop-zone-text { color: #94a3b8; font-size: 14px; }
     .drop-zone-text strong { color: #6366f1; }
-    .file-info { margin-top: 16px; padding: 12px; background: rgba(99,102,241,0.1); border-radius: 8px; color: #a5b4fc; font-size: 12px; display: none; }
+    .file-info { margin-top: 16px; padding: 12px; background: rgba(99,102,241,0.1); border-radius: 8px; color: #fff; font-size: 12px; display: none; }
     .btn-process { margin-top: 20px; padding: 12px 32px; border-radius: 8px; border: none; background: #6366f1; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; display: none; transition: all 0.3s; }
     .btn-process:hover { background: #4f46e5; transform: scale(1.02); }
     .status-msg { margin-top: 12px; font-size: 12px; color: #4ade80; display: none; }
     .clear-data { display:inline-flex; align-items:center; justify-content:center; margin-left:8px; width:18px; height:18px; border-radius:50%; background:rgba(248,113,113,0.15); color:#f87171; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; vertical-align:middle; }
     .clear-data:hover { background:rgba(248,113,113,0.3); transform:scale(1.2); }
+    /* 매체별 상세 표 */
+    .detail-rank { display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:4px;font-size:10px;font-weight:800;background:rgba(99,102,241,0.2);color:#a5b4fc; }
+    .detail-company { text-align:left;font-size:12px;color:#94a3b8; }
+    .detail-name { text-align:left;font-weight:700;color:#fff; }
+    .detail-total { color:#fff; }
+    .detail-sum-row td { border-top:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.03); }
+    body.light .detail-rank { background:rgba(99,102,241,0.1);color:#6366f1; }
+    body.light .detail-company { color:#64748b; }
+    body.light .detail-name { color:#000; }
+    body.light .detail-total { color:#000; }
+    body.light .detail-table td { color:#334155; }
+    body.light .detail-table th { color:#000; }
+    body.light .detail-sum-row td { border-top:1px solid #e2e8f0; background:rgba(0,0,0,0.02); color:#000; }
+    body.light .detail-filter { background:#fff; color:#334155; border-color:#e2e8f0; }
+    body.light .wow-up { color:#16a34a; }
+    body.light .wow-down { color:#dc2626; }
     /* 라이트 모드 */
     body.light { background: #f8fafc; color: #1e293b; }
     body.light .dashboard-header h1 { color: #1e293b; }
@@ -95,12 +110,12 @@
   <div class="modal">
     <span class="modal-close" onclick="closeModal()">&times;</span>
     <h2>파일 업로드</h2>
-    <p>매체비 엑셀 파일(.xlsx)</p>
+    <p>매체비 리포트 엑셀 파일(.xlsx)</p>
     <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
       <div class="drop-zone-icon">&#128194;</div>
       <div class="drop-zone-text"><strong>클릭</strong>하거나 파일을 <strong>드래그</strong>하세요</div>
     </div>
-    <a href="https://drive.google.com/drive/folders/1ICjvwrOTcTmyU8mjPaZ12UYD0FiSxhzA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 16px;border-radius:8px;background:rgba(66,133,244,0.1);border:none;color:#93b4f4;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Google Drive에서 엑셀 파일 받기</a>
+    <a href="https://drive.google.com/drive/folders/1ICjvwrOTcTmyU8mjPaZ12UYD0FiSxhzA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:10px 16px;border-radius:8px;background:rgba(66,133,244,0.1);border:none;color:#93b4f4;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Google Drive에서 파일 받기</a>
     <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
     <div class="file-info" id="fileInfo"></div>
     <button class="btn-process" id="btnProcess" onclick="processFile()">데이터 적용</button>
@@ -158,12 +173,12 @@
   </div>
 </div>
 
-<div class="footer" style="font-size:14px;">Ocean.Kim</div>
+<div class="footer" style="font-size:14px;">Ocean.Kim | <span style="cursor:pointer;text-decoration:underline;" onclick="openGuide()">가이드</span></div>
 
 <script>
 // === 데이터 삭제 ===
 function clearDashboardData() {
-  showConfirmModal('데이터를 초기화하시겠습니까?', '대시보드 모두에서 데이터가 사라집니다.', function() {
+  showConfirmModal('업로드된 데이터를 초기화하시겠습니까?', '대시보드 모두에서 데이터가 사라집니다.', function() {
     localStorage.removeItem('media_dashboard_raw');
     location.reload();
   });
@@ -186,6 +201,10 @@ function showConfirmModal(title, msg, onConfirm) {
 }
 
 // === 테마 토글 ===
+
+function openGuide() { document.getElementById('guideModal').classList.add('active'); }
+function closeGuide() { document.getElementById('guideModal').classList.remove('active'); }
+
 function toggleTheme() {
   document.body.classList.toggle('light');
   var icon = document.querySelector('.theme-toggle');
@@ -396,8 +415,17 @@ function renderDetailTable(data) {
   data.forEach(function(m, i) {
     var sign = m.pct >= 0 ? '+' : '';
     var cls = m.pct >= 0 ? 'wow-up' : 'wow-down';
-    tbody.innerHTML += '<tr><td style="text-align:center;"><span style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:4px;font-size:10px;font-weight:800;background:rgba(99,102,241,0.2);color:#a5b4fc;">' + (i + 1) + '</span></td><td style="text-align:left;font-size:12px;color:#94a3b8;">' + (m.company || '') + '</td><td style="text-align:left;font-weight:700;color:#fff;">' + m.name + '</td><td style="text-align:right;">' + m.os + '</td><td style="text-align:right;font-weight:800;color:#fff;">' + fmt(m.total) + '원</td><td style="text-align:right;">' + fmt(m.w1) + '원</td><td style="text-align:right;">' + fmt(m.w2) + '원</td><td style="text-align:right;" class="' + cls + '">' + sign + m.pct + '%</td></tr>';
+    tbody.innerHTML += '<tr><td style="text-align:center;"><span class="detail-rank">' + (i + 1) + '</span></td><td class="detail-company">' + (m.company || '') + '</td><td class="detail-name">' + m.name + '</td><td style="text-align:right;">' + m.os + '</td><td style="text-align:right;font-weight:800;" class="detail-total">' + fmt(m.total) + '원</td><td style="text-align:right;">' + fmt(m.w1) + '원</td><td style="text-align:right;">' + fmt(m.w2) + '원</td><td style="text-align:right;" class="' + cls + '">' + sign + m.pct + '%</td></tr>';
   });
+  // 합계 행
+  if (data.length > 0) {
+    var sumTotal = 0, sumW1 = 0, sumW2 = 0, sumPct = 0;
+    data.forEach(function(m){ sumTotal += m.total; sumW1 += m.w1; sumW2 += m.w2; sumPct += m.pct; });
+    var avgPct = Math.round(sumPct / data.length * 10) / 10;
+    var avgSign = avgPct >= 0 ? '+' : '';
+    var avgCls = avgPct >= 0 ? 'wow-up' : 'wow-down';
+    tbody.innerHTML += '<tr class="detail-sum-row"><td></td><td></td><td class="detail-name" style="font-weight:800;">합계</td><td></td><td style="text-align:right;font-weight:800;" class="detail-total">' + fmt(sumTotal) + '원</td><td style="text-align:right;font-weight:800;">' + fmt(sumW1) + '원</td><td style="text-align:right;font-weight:800;">' + fmt(sumW2) + '원</td><td style="text-align:right;font-weight:800;" class="' + avgCls + '">' + avgSign + avgPct + '%</td></tr>';
+  }
 }
 
 // === 초기 로드: localStorage에서 데이터 복원 ===
@@ -410,5 +438,22 @@ if (saved) {
   document.getElementById('headerSub').textContent = '파일을 업로드하세요 (타이틀 옆 아이콘 클릭)';
 }
 </script>
+
+<!-- 이용 가이드 모달 -->
+<div class="modal-overlay" id="guideModal" onclick="if(event.target===this)closeGuide()">
+  <div class="modal" style="width:520px;text-align:left;">
+    <span class="modal-close" onclick="closeGuide()">&times;</span>
+    <h2 style="font-size:18px;margin-bottom:20px;text-align:center;">&#128214; 이용 가이드</h2>
+    <div style="font-size:13px;line-height:2;color:#cbd5e1;">
+      <p><strong style="color:#a5b4fc;">1. 데이터 업데이트</strong><br>타이틀 옆 업로드 아이콘 클릭 → Google Drive에서 최신 엑셀 다운로드 → 업로드<br><span style="font-size:11px;color:#64748b;">(애드팝콘 관계자만 Google Drive 접근 가능)</span></p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">2. 대시보드 전환</strong><br>좌측 상단 아이콘으로 전체 매체 ↔ 잼팟 & 한게임 리포트 전환</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">3. 매체별 필터</strong><br>잼팟 & 한게임 대시보드 하단 표에서 회사/매체/OS 필터 + 정렬 가능</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">4. 매체 상세 이동</strong><br>전체 매체 대시보드에서 변동 매체 클릭 → TOP 30으로 이동 (다시 클릭 시 원복)</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">5. 다크/라이트 모드</strong><br>우측 상단 아이콘으로 전환</p>
+      <p style="margin-top:12px;"><strong style="color:#a5b4fc;">6. 데이터 저장</strong><br>업로드된 데이터는 브라우저에 개인 저장됨<br><span style="font-size:11px;color:#64748b;">(다른 사람/시크릿 모드에서는 별도 업로드 필요)</span></p>
+    </div>
+    <p style="margin-top:24px;text-align:center;font-size:11px;color:#64748b;">기타 문의 사항 발생시 리워드 사업실 오션에게 연락부탁드립니다!</p>
+  </div>
+</div>
 </body>
 </html>
