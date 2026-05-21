@@ -426,7 +426,7 @@ function renderDetailTable(data) {
   if (data.length > 0) {
     var sumTotal = 0, sumW1 = 0, sumW2 = 0, sumPct = 0;
     data.forEach(function(m){ sumTotal += m.total; sumW1 += m.w1; sumW2 += m.w2; sumPct += m.pct; });
-    var avgPct = Math.round(sumPct / data.length * 10) / 10;
+    var avgPct = sumW1 > 0 ? Math.round((sumW2 - sumW1) / sumW1 * 1000) / 10 : 0;
     var avgSign = avgPct >= 0 ? '+' : '';
     var avgCls = avgPct >= 0 ? 'wow-up' : 'wow-down';
     tbody.innerHTML += '<tr class="detail-sum-row"><td></td><td></td><td class="detail-name" style="font-weight:800;">합계</td><td></td><td style="text-align:right;font-weight:800;" class="detail-total">' + fmt(sumTotal) + '원</td><td style="text-align:right;font-weight:800;">' + fmt(sumW1) + '원</td><td style="text-align:right;font-weight:800;">' + fmt(sumW2) + '원</td><td style="text-align:right;"><span class="badge ' + avgCls + '" style="font-weight:800;">' + avgSign + avgPct + '%</span></td></tr>';
