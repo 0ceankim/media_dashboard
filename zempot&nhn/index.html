@@ -8,10 +8,10 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="/media_dashboard/shared_process.js"></script>
-  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Pretendard', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e0e0e0; padding: 32px; min-height: 100vh; }
+    body { font-family: 'Nanum Gothic', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #e0e0e0; padding: 32px; min-height: 100vh; }
     .dashboard-header { text-align: center; margin-bottom: 40px; position: relative; }
     .dashboard-header h1 { font-size: 32px; font-weight: 800; color: #fff; display: inline-block; }
     .upload-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; position: relative; top: -2px; border-radius: 8px; background: rgba(99,102,241,0.35); border: 1px solid rgba(99,102,241,0.4); cursor: pointer; color: #fff; transition: all 0.3s;  }
@@ -277,7 +277,7 @@ function processFile() {
 }
 
 // === 대시보드 렌더링 ===
-Chart.defaults.font.family = 'Pretendard';
+Chart.defaults.font.family = 'Nanum Gothic';
 let chartInstances = [];
 
 function renderDashboard(D) {
