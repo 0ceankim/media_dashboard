@@ -104,8 +104,8 @@ function processForAllMedia(rawData) {
   const totalW2 = mediaResults.reduce((a, m) => a + m.w2, 0);
   
   const sortedByDiff = [...mediaResults].sort((a, b) => a.diff - b.diff);
-  const pctUpPool = mediaResults.filter(m => m.w1 >= 50000 && m.diff >= 50000);
-  const pctDownPool = mediaResults.filter(m => m.w1 >= 100000 && m.diff <= -50000);
+  const pctUpPool = mediaResults.filter(m => m.w1 >= 100000 && m.diff >= 100000);
+  const pctDownPool = mediaResults.filter(m => m.w1 >= 100000 && m.diff <= -100000);
   
   return {
     meta: {
